@@ -1,4 +1,8 @@
 import swaggerJsdoc from "swagger-jsdoc";
+import path from "path";
+
+const routeDocsGlob = (extension: "ts" | "js") =>
+  path.join(__dirname, `../routes/*.${extension}`).replace(/\\/g, "/");
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -9,7 +13,7 @@ const options: swaggerJsdoc.Options = {
       description: "Full backend API for alpha Life productivity app",
     },
     servers: [
-      { url: "http://localhost:5000/api", description: "Development server" },
+      { url: "http://localhost:5001/api", description: "Development server" },
     ],
     components: {
       securitySchemes: {
@@ -22,7 +26,7 @@ const options: swaggerJsdoc.Options = {
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["./src/routes/*.ts"],
+  apis: [routeDocsGlob("ts"), routeDocsGlob("js")],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
