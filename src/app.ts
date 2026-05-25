@@ -6,11 +6,9 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import swaggerUi from "swagger-ui-express";
 
-import { connectDB } from "./config/db";
 import { swaggerSpec } from "./config/swagger";
 import { errorHandler } from "./middleware/error.middleware";
 
-// Routes
 import authRoutes from "./routes/auth.routes";
 import taskRoutes from "./routes/task.routes";
 import timerRoutes from "./routes/timer.routes";
@@ -21,8 +19,6 @@ import noteRoutes from "./routes/note.routes";
 import userRoutes from "./routes/user.routes";
 
 const app = express();
-
-connectDB();
 
 const helmetMiddleware = helmet();
 const allowedOrigins = (process.env.CLIENT_URL || "")
@@ -89,7 +85,7 @@ app.use("/api/auth/register", authLimiter);
 app.get("/api/health", (req, res) => {
   res.json({
     success: true,
-    message: "alpha Life API is running 🚀",
+    message: "alpha Life API is running",
     env: process.env.NODE_ENV,
   });
 });
@@ -111,14 +107,5 @@ app.use((req, res) => {
 });
 
 app.use(errorHandler);
-
-const PORT = process.env.PORT || 5001;
-
-app.listen(PORT, () => {
-  console.log(
-    `🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`,
-  );
-  console.log(`📚 Swagger docs: http://localhost:${PORT}/api/docs`);
-});
 
 export default app;
