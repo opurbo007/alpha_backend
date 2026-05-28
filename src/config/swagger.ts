@@ -13,7 +13,7 @@ const options: swaggerJsdoc.Options = {
       description: "Full backend API for alpha Life productivity app",
     },
     servers: [
-      { url: "http://localhost:5001/api", description: "Development server" },
+      { url: "https://alpha-backend-0o8r.onrender.com/api", description: "Development server" },
     ],
     components: {
       securitySchemes: {
