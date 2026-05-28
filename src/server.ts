@@ -10,7 +10,7 @@ const startServer = async () => {
     console.log(
       `Server running on port ${PORT} in ${process.env.NODE_ENV} mode`,
     );
-    console.log(`Swagger docs: http://localhost:${PORT}/api/docs`);
+    // console.log(`Swagger docs:${PORT}/api/docs`);
   });
 };
 

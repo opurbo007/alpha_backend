@@ -36,16 +36,10 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "development"
-        ? true
-        : allowedOrigins.length > 0
-          ? allowedOrigins
-          : false,
-    credentials: true,
+    origin: "*",
+    credentials: false,
   }),
 );
-
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
