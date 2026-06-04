@@ -5,6 +5,10 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
+  alphaLifeSettings: {
+    signInDurationDays: number;
+    notificationTime: string;
+  };
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   refreshToken?: string;
@@ -24,6 +28,14 @@ const UserSchema = new Schema<IUser>(
       trim: true,
     },
     password: { type: String, required: true, minlength: 6, select: false },
+    alphaLifeSettings: {
+      signInDurationDays: { type: Number, default: 30, min: 1, max: 365 },
+      notificationTime: {
+        type: String,
+        default: "20:00",
+        match: /^([01]\d|2[0-3]):[0-5]\d$/,
+      },
+    },
     resetPasswordToken: { type: String, select: false },
     resetPasswordExpires: { type: Date, select: false },
     refreshToken: { type: String, select: false },

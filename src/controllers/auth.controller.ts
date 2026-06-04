@@ -6,6 +6,14 @@ import { sendPasswordResetEmail, sendWelcomeEmail } from '../utils/email';
 import { sendSuccess, sendError } from '../utils/response';
 import { AuthRequest } from '../middleware/auth.middleware';
 
+const getUserPayload = (user: any) => ({
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+  alphaLifeSettings: user.alphaLifeSettings,
+  createdAt: user.createdAt,
+});
+
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, password } = req.body;
@@ -21,7 +29,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     sendWelcomeEmail(email, name).catch(console.error);
 
     sendSuccess(res, {
-      user: { _id: user._id, name: user.name, email: user.email, createdAt: user.createdAt },
+      user: getUserPayload(user),
       token: accessToken,
       refreshToken,
     }, 'Account created successfully', 201);
@@ -43,7 +51,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     await User.findByIdAndUpdate(user._id, { refreshToken });
 
     sendSuccess(res, {
-      user: { _id: user._id, name: user.name, email: user.email, createdAt: user.createdAt },
+      user: getUserPayload(user),
       token: accessToken,
       refreshToken,
     }, 'Login successful');
@@ -122,10 +130,5 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
 };
 
 export const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
-  sendSuccess(res, {
-    _id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-    createdAt: req.user.createdAt,
-  });
+  sendSuccess(res, getUserPayload(req.user));
 };

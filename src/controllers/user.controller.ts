@@ -21,6 +21,36 @@ export const updateProfile = async (req: AuthRequest, res: Response): Promise<vo
   }
 };
 
+export const updateAlphaLifeSettings = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { signInDurationDays, notificationTime } = req.body;
+    const alphaLifeSettings: Record<string, number | string> = {};
+
+    if (signInDurationDays !== undefined) {
+      alphaLifeSettings['alphaLifeSettings.signInDurationDays'] = Number(signInDurationDays);
+    }
+
+    if (notificationTime !== undefined) {
+      alphaLifeSettings['alphaLifeSettings.notificationTime'] = notificationTime;
+    }
+
+    if (Object.keys(alphaLifeSettings).length === 0) {
+      sendError(res, 'No alpha Life settings provided', 400);
+      return;
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: alphaLifeSettings },
+      { new: true, runValidators: true },
+    );
+
+    sendSuccess(res, user?.alphaLifeSettings, 'alpha Life settings updated');
+  } catch {
+    sendError(res, 'alpha Life settings update failed', 500);
+  }
+};
+
 export const changePassword = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { currentPassword, newPassword } = req.body;
