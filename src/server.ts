@@ -1,16 +1,15 @@
 import app from "./app";
 import { connectDB } from "./config/db";
 
-const PORT = process.env.PORT || 5001;
+const PORT: number = parseInt(process.env.PORT || "8080", 10);
 
 const startServer = async () => {
   await connectDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(
-      `Server running on port ${PORT} in ${process.env.NODE_ENV} mode`,
+      `Server running on 0.0.0.0:${PORT} in ${process.env.NODE_ENV} mode`,
     );
-    // console.log(`Swagger docs:${PORT}/api/docs`);
   });
 };
 
